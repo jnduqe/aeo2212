@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe Comercial · AEO2212 San Nicolás Rionegro · Ene-Jun 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+  --denim-950:#141d2e;
+  --denim-900:#1c2b45;
+  --denim-800:#25395c;
+  --denim-700:#324b76;
+  --denim-400:#7690b8;
+  --sand:#f3ede1;
+  --sand-dim:#e9e0cf;
+  --paper:#fbf8f1;
+  --copper:#c1743f;
+  --copper-dark:#a35f31;
+  --stitch:#c7bda3;
+  --ok:#4c7a5c;
+  --warn:#b3452c;
+  --ink:#20242c;
+  --ink-soft:#5a5f6b;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.mono{font-family:'IBM Plex Mono',monospace;}
+h1,h2,h3,.serif{font-family:'Fraunces',serif;}
+
+/* ---- stitching divider signature element ---- */
+.stitch{
+  height:0;
+  border-top:2px dashed var(--stitch);
+  position:relative;
+  margin: 0;
+}
+.stitch::before{
+  content:"";
+  position:absolute; left:0; right:0; top:5px;
+  border-top:2px dashed var(--stitch);
+  opacity:.55;
+}
+
+.rivet{
+  width:9px; height:9px; border-radius:50%;
+  background:var(--copper);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.5), 0 1px 2px rgba(0,0,0,.35);
+  display:inline-block;
+}
+
+/* ---- layout shell ---- */
+.wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+section{padding:88px 0;}
+@media (max-width:720px){ section{padding:56px 0;} .wrap{padding:0 20px;} }
+
+/* ---- HERO ---- */
+.hero{
+  background:
+    radial-gradient(1200px 500px at 15% -10%, rgba(193,116,63,.25), transparent 60%),
+    linear-gradient(180deg, var(--denim-950), var(--denim-900) 55%, var(--denim-800));
+  color:var(--sand);
+  padding:100px 0 80px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:"";
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient(115deg, rgba(255,255,255,.035) 0 2px, transparent 2px 26px);
+  pointer-events:none;
+}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-size:12.5px;
+  color:var(--copper);
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:22px;
+}
+.eyebrow .line{width:34px; height:1px; background:var(--copper); opacity:.8;}
+.hero h1{
+  font-size:clamp(34px,5.4vw,58px);
+  font-weight:600;
+  line-height:1.06;
+  max-width:820px;
+  color:#fff;
+}
+.hero h1 em{font-style:italic; color:var(--copper); font-weight:500;}
+.hero .sub{
+  margin-top:22px;
+  max-width:600px;
+  color:var(--denim-400);
+  font-size:16.5px;
+}
+.hero-meta{
+  margin-top:48px;
+  display:flex; flex-wrap:wrap; gap:0;
+  border-top:1px solid rgba(255,255,255,.14);
+  padding-top:26px;
+}
+.hero-meta div{
+  padding:0 28px 0 0; margin-right:28px;
+  border-right:1px dashed rgba(255,255,255,.22);
+}
+.hero-meta div:last-child{border-right:none;}
+.hero-meta .k{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--denim-400); font-family:'IBM Plex Mono',monospace;}
+.hero-meta .v{font-size:15px; color:#fff; margin-top:4px; font-weight:600;}
+
+.hero-hero-number{
+  margin-top:54px;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:4px;
+  overflow:hidden;
+}
+.hnum{padding:26px 24px; border-right:1px dashed rgba(255,255,255,.15);}
+.hnum:last-child{border-right:none;}
+.hnum .big{font-family:'Fraunces',serif; font-size:clamp(24px,2.6vw,34px); font-weight:600; color:#fff;}
+.hnum .lbl{font-size:12px; color:var(--denim-400); margin-top:6px; letter-spacing:.02em;}
+.hnum .tag{display:inline-block; margin-top:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; padding:2px 8px; border-radius:20px;}
+.tag.ok{background:rgba(76,122,92,.25); color:#8fd6a8;}
+.tag.warn{background:rgba(179,69,44,.25); color:#f0a189;}
+@media (max-width:720px){.hero-hero-number{grid-template-columns:1fr 1fr;} .hnum{border-bottom:1px dashed rgba(255,255,255,.15);}}
+
+/* ---- section headers ---- */
+.section-head{display:flex; align-items:baseline; gap:14px; margin-bottom:8px;}
+.section-num{font-family:'IBM Plex Mono',monospace; color:var(--copper); font-size:14px;}
+.section-head h2{font-size:clamp(26px,3vw,36px); font-weight:600; color:var(--denim-900);}
+.section-kicker{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--copper-dark); margin-bottom:10px;
+}
+.lede{max-width:720px; color:var(--ink-soft); font-size:16px; margin-top:14px; margin-bottom:40px;}
+
+/* ---- cards / grids ---- */
+.card{
+  background:var(--sand);
+  border:1px solid var(--sand-dim);
+  border-radius:6px;
+  padding:26px;
+}
+.grid-2{display:grid; grid-template-columns:1.3fr 1fr; gap:28px;}
+.grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+.grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+@media (max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+
+.kpi{
+  background:var(--sand);
+  border:1px solid var(--sand-dim);
+  border-radius:6px;
+  padding:22px 22px 20px;
+  position:relative;
+}
+.kpi::before{
+  content:"";
+  position:absolute; left:0; top:16px; bottom:16px; width:3px;
+  background:var(--copper); border-radius:0 3px 3px 0;
+}
+.kpi .lbl{font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+.kpi .val{font-family:'Fraunces',serif; font-size:28px; font-weight:600; color:var(--denim-900); margin-top:8px;}
+.kpi .delta{font-size:12.5px; margin-top:6px; font-family:'IBM Plex Mono',monospace;}
+.delta.up{color:var(--ok);}
+.delta.down{color:var(--warn);}
+
+.chart-box{background:#fff; border:1px solid var(--sand-dim); border-radius:6px; padding:22px;}
+.chart-box h3{font-size:16px; font-weight:600; color:var(--denim-900); margin-bottom:4px;}
+.chart-box .note{font-size:12.5px; color:var(--ink-soft); margin-bottom:16px;}
+.chart-wrap{position:relative; height:300px;}
+.chart-wrap.tall{height:380px;}
+
+/* callouts */
+.callout{
+  border-left:3px solid var(--copper);
+  background:linear-gradient(90deg, rgba(193,116,63,.08), transparent);
+  padding:16px 20px;
+  border-radius:0 6px 6px 0;
+  font-size:14.5px;
+  color:var(--denim-900);
+}
+.callout b{color:var(--copper-dark);}
+.callout.math{border-left-color:var(--denim-700); background:linear-gradient(90deg, rgba(50,75,118,.08), transparent);}
+.callout.math b{color:var(--denim-700);}
+.formula{
+  font-family:'IBM Plex Mono',monospace;
+  background:var(--denim-900);
+  color:#f3ede1;
+  padding:20px 24px;
+  border-radius:6px;
+  font-size:15px;
+  overflow-x:auto;
+  white-space:nowrap;
+}
+.formula .op{color:var(--copper);}
+.formula .r2{color:#8fd6a8;}
+
+table{width:100%; border-collapse:collapse; font-size:13.5px;}
+th{
+  text-align:left; font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase;
+  letter-spacing:.05em; color:var(--ink-soft); padding:10px 12px; border-bottom:2px solid var(--denim-900);
+}
+td{padding:10px 12px; border-bottom:1px solid var(--sand-dim);}
+tr:last-child td{border-bottom:none;}
+td.num, th.num{text-align:right; font-family:'IBM Plex Mono',monospace;}
+tr.hl td{background:rgba(193,116,63,.08); font-weight:600;}
+
+.pill{display:inline-block; padding:2px 10px; border-radius:20px; font-size:11.5px; font-family:'IBM Plex Mono',monospace;}
+.pill.ok{background:rgba(76,122,92,.15); color:var(--ok);}
+.pill.warn{background:rgba(179,69,44,.15); color:var(--warn);}
+.pill.neutral{background:rgba(50,75,118,.12); color:var(--denim-700);}
+
+.badge-num{
+  width:30px; height:30px; border-radius:50%;
+  background:var(--denim-900); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono',monospace; font-size:13px;
+  flex-shrink:0;
+}
+.reco{display:flex; gap:16px; padding:18px 0; border-bottom:1px dashed var(--sand-dim);}
+.reco:last-child{border-bottom:none;}
+.reco h4{font-size:15.5px; color:var(--denim-900); margin-bottom:4px; font-weight:700;}
+.reco p{font-size:14px; color:var(--ink-soft);}
+
+footer{
+  background:var(--denim-950); color:var(--denim-400);
+  padding:50px 0 34px; font-size:13px;
+}
+footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px;}
+footer b{color:var(--sand);}
+
+.section-alt{background:var(--sand);}
+.two-col-text{display:grid; grid-template-columns:1fr 1fr; gap:40px;}
+@media (max-width:900px){.two-col-text{grid-template-columns:1fr;}}
+
+.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(20,29,46,.92); backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.nav .wrap{display:flex; align-items:center; justify-content:space-between; height:56px;}
+.nav .brand{color:#fff; font-family:'IBM Plex Mono',monospace; font-size:12.5px; letter-spacing:.05em;}
+.nav .links{display:flex; gap:22px;}
+.nav .links a{color:var(--denim-400); font-size:12.5px; text-decoration:none; font-family:'IBM Plex Mono',monospace;}
+.nav .links a:hover{color:var(--copper);}
+@media (max-width:800px){.nav .links{display:none;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand">AEO2212 · SAN NICOLÁS RIONEGRO</div>
+    <div class="links">
+      <a href="#panorama">Panorama</a>
+      <a href="#trafico">Tráfico</a>
+      <a href="#formula">Fórmula</a>
+      <a href="#categorias">Categorías</a>
+      <a href="#jeans">Jeans</a>
+      <a href="#estrategias">Descuentos</a>
+      <a href="#recomendaciones">Recomendaciones</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="line"></span> INFORME EJECUTIVO · ENERO — JUNIO 2026</div>
+    <h1>Seis meses de ventas, <em>un solo hilo conductor:</em> el jean.</h1>
+    <p class="sub">Lectura analítica del desempeño comercial de la tienda American Eagle San Nicolás Rionegro: tráfico, conversión, mezcla de categorías, estrategias de descuento y proyección para el segundo semestre.</p>
+
+    <div class="hero-meta">
+      <div><div class="k">Tienda</div><div class="v">AEO2212 San Nicolás Rionegro</div></div>
+      <div><div class="k">Gerente de Distrito</div><div class="v">Paloma Suan</div></div>
+      <div><div class="k">Período analizado</div><div class="v">Ene – Jun 2026 (6 meses)</div></div>
+      <div><div class="k">Fuentes</div><div class="v">24 reportes · Ventas, Categorías, Jeans, Estrategias</div></div>
+    </div>
+
+    <div class="hero-hero-number">
+      <div class="hnum">
+        <div class="big">$1.002 MM</div>
+        <div class="lbl">Venta acumulada del semestre</div>
+      </div>
+      <div class="hnum">
+        <div class="big">95,2%</div>
+        <div class="lbl">Cumplimiento de presupuesto acumulado</div>
+        <span class="tag warn">↓ tendencia negativa</span>
+      </div>
+      <div class="hnum">
+        <div class="big">28.994</div>
+        <div class="lbl">Visitantes registrados (footfall)</div>
+      </div>
+      <div class="hnum">
+        <div class="big">70,5%</div>
+        <div class="lbl">De la venta la generan solo 20% de las referencias</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 01 PANORAMA ============ -->
+<section id="panorama">
+  <div class="wrap">
+    <div class="section-kicker">01 · Panorama general</div>
+    <div class="section-head"><span class="rivet"></span><h2>La ejecución se desinfló mientras el negocio maduraba</h2></div>
+    <p class="lede">La tienda cerró el semestre con <b>$1.002.057.539</b> en ventas netas frente a un presupuesto acumulado de <b>$1.053.000.000</b> (95,2% de cumplimiento). Pero el promedio esconde una historia de dos mitades: un primer trimestre que superó el presupuesto y un segundo trimestre que se alejó de la meta mes a mes, incluso con mayo como el mes de mayor venta absoluta del año.</p>
+
+    <div class="grid-4" style="margin-bottom:32px;">
+      <div class="kpi"><div class="lbl">Venta / Presupuesto</div><div class="val">95,2%</div><div class="delta down">6 meses, 3 por encima y 3 por debajo de PPTO</div></div>
+      <div class="kpi"><div class="lbl">Facturas totales</div><div class="val">3.826</div><div class="delta up">Ticket promedio $261.907</div></div>
+      <div class="kpi"><div class="lbl">Tasa de conversión prom.</div><div class="val">11,55%</div><div class="delta down">De cada 100 visitantes, ~12 compran</div></div>
+      <div class="kpi"><div class="lbl">UPT promedio</div><div class="val">2,32 und</div><div class="delta up">Unidades por transacción</div></div>
+    </div>
+
+    <div class="chart-box">
+      <h3>Venta real vs. Presupuesto mensual</h3>
+      <div class="note">Barras: venta neta mensual · Línea: presupuesto (PPTO) · Área sombreada: brecha de ejecución</div>
+      <div class="chart-wrap tall"><canvas id="chartVentaPpto"></canvas></div>
+    </div>
+
+    <div class="two-col-text" style="margin-top:28px;">
+      <div class="callout">
+        <b>Enero–Febrero:</b> arranque fuerte. Enero cumplió 116,9% y febrero 134,3% del presupuesto — el mejor mes relativo del semestre, aun con la venta absoluta más baja ($126,2M), porque el presupuesto también era el más conservador ($94M).
+      </div>
+      <div class="callout" style="border-left-color:var(--warn); background:linear-gradient(90deg, rgba(179,69,44,.08), transparent);">
+        <b style="color:var(--warn)">Mayo–Junio:</b> mayo fue el mes de mayor venta del año ($208,8M) pero el presupuesto ($244M) creció más rápido que la operación, dejando 85,6% de ejecución. Junio profundizó la caída a 72,4%, el punto más bajo del semestre.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stitch"></div>
+
+<!-- ============ 02 TRAFICO ============ -->
+<section id="trafico" class="section-alt">
+  <div class="wrap">
+    <div class="section-kicker">02 · Tráfico, conversión y canasta</div>
+    <div class="section-head"><span class="rivet"></span><h2>No falta gente en la tienda: falta convertirla</h2></div>
+    <p class="lede">Separar la venta en sus tres palancas operativas —tráfico, conversión y unidades por ticket (UPT)— permite ver dónde está realmente la oportunidad.</p>
+
+    <div class="grid-2" style="margin-bottom:28px;">
+      <div class="chart-box">
+        <h3>Tráfico (Footfall) vs. Conversión (TC)</h3>
+        <div class="note">Eje izquierdo: visitantes · Eje derecho: % de conversión</div>
+        <div class="chart-wrap"><canvas id="chartTraficoConv"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Índice de estacionalidad</h3>
+        <div class="note">Venta mensual ÷ venta promedio del semestre (base = 1,0)</div>
+        <div class="chart-wrap"><canvas id="chartEstacional"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="pill neutral">Hallazgo 1</div>
+        <p style="margin-top:12px; font-size:14.5px;"><b>Abril tuvo la mejor conversión del semestre (14,0%)</b> — casi 4 puntos por encima del promedio — a pesar de tener uno de los tráficos más bajos (4.457 visitantes). El equipo cerró mejor con menos gente en el punto de venta.</p>
+      </div>
+      <div class="card">
+        <div class="pill warn">Hallazgo 2</div>
+        <p style="margin-top:12px; font-size:14.5px;"><b>Mayo tuvo el tráfico más alto (5.746) pero conversión apenas promedio (12,08%).</b> Si mayo hubiera convertido como abril, la venta habría superado el presupuesto en vez de quedarse en 85,6%.</p>
+      </div>
+      <div class="card">
+        <div class="pill ok">Hallazgo 3</div>
+        <p style="margin-top:12px; font-size:14.5px;"><b>UPT y tráfico se mueven en direcciones opuestas</b> (correlación −0,57): en los meses de más visitantes, cada cliente compra menos unidades. Es el patrón clásico de tráfico impulsado por promoción puntual vs. compra planeada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stitch"></div>
+
+<!-- ============ 03 FORMULA MATEMATICA ============ -->
+<section id="formula">
+  <div class="wrap">
+    <div class="section-kicker">03 · La aritmética de la venta</div>
+    <div class="section-head"><span class="rivet"></span><h2>Un modelo simple que explica el 98,9% de la variación de ventas</h2></div>
+    <p class="lede">La venta de retail se puede descomponer en un producto de cuatro factores. Corriendo una regresión multivariable sobre los seis meses del semestre, este modelo explica prácticamente toda la variación observada en la venta real.</p>
+
+    <div class="formula" style="margin-bottom:28px;">
+      Venta <span class="op">=</span> Tráfico <span class="op">×</span> Conversión <span class="op">×</span> UPT <span class="op">×</span> AUR&nbsp;&nbsp;<span style="color:#9aa5b8">// AUR = precio promedio por unidad</span><br>
+      R² <span class="op">=</span> <span class="r2">98,9%</span>&nbsp;&nbsp;<span style="color:#9aa5b8">// el modelo explica casi toda la variación de venta observada</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="chart-box">
+        <h3>Matriz de correlación</h3>
+        <div class="note">Coeficiente de Pearson entre las 4 variables clave (n=6 meses)</div>
+        <div id="corrTable"></div>
+      </div>
+      <div class="chart-box">
+        <h3>AUR implícito por mes</h3>
+        <div class="note">Precio promedio por unidad vendida (Venta ÷ unidades estimadas)</div>
+        <div class="chart-wrap"><canvas id="chartAUR"></canvas></div>
+      </div>
+    </div>
+
+    <div class="callout math" style="margin-top:24px;">
+      <b>Lectura gerencial:</b> el tráfico es la variable con mayor correlación directa con la venta (0,75), seguida de la conversión (0,59). Esto sugiere que las campañas de atracción de tráfico (vitrinismo, redes, eventos en el centro comercial) tienen más impalancamiento sobre la venta que los descuentos profundos, que en cambio mueven UPT y AUR hacia abajo.
+    </div>
+  </div>
+</section>
+
+<div class="stitch"></div>
+
+<!-- ============ 04 CATEGORIAS ============ -->
+<section id="categorias" class="section-alt">
+  <div class="wrap">
+    <div class="section-kicker">04 · Mezcla de categorías</div>
+    <div class="section-head"><span class="rivet"></span><h2>Dos categorías sostienen la mitad del negocio</h2></div>
+    <p class="lede">Sobre 37 departamentos de producto activos en el semestre, la concentración es alta: <b>Womens Jeans y Mens Jeans representan 52,2%</b> de toda la venta categorizada del período ($786,9M analizados).</p>
+
+    <div class="grid-2">
+      <div class="chart-box">
+        <h3>Top categorías por venta neta (Ene–Jun)</h3>
+        <div class="note">Ordenado de mayor a menor · % = margen bruto de contribución</div>
+        <div class="chart-wrap tall"><canvas id="chartCategorias"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Ley de Pareto: concentración por referencia (SKU)</h3>
+        <div class="note">917 referencias vendidas · curva acumulada de participación en venta</div>
+        <div class="chart-wrap tall"><canvas id="chartPareto"></canvas></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:24px;">
+      <b>Regla 80/20, casi exacta:</b> el 20% de las referencias más vendidas (≈183 SKUs de 917) concentra el 70,5% de la venta total del semestre. El 50% de las referencias con menor rotación aporta menos de 9% — candidatas naturales a liquidación, reducción de surtido o renegociación con el proveedor.
+    </div>
+  </div>
+</section>
+
+<div class="stitch"></div>
+
+<!-- ============ 05 JEANS ============ -->
+<section id="jeans">
+  <div class="wrap">
+    <div class="section-kicker">05 · Foco de categoría: Jeans</div>
+    <div class="section-head"><span class="rivet"></span><h2>La dependencia del jean creció del 50% al 78% en cuatro meses</h2></div>
+    <p class="lede">Jeans (Mens + Womens) pasó de representar 50,1% de la venta categorizada en febrero a 77,3% en abril, y se mantuvo por encima del 67% en mayo y junio. Es la columna vertebral del negocio — y también su mayor riesgo de concentración.</p>
+
+    <div class="grid-2" style="margin-bottom:28px;">
+      <div class="chart-box">
+        <h3>Venta de jeans por género y participación</h3>
+        <div class="note">Barras apiladas: venta ($) · Línea punteada: % de participación sobre categorías totales</div>
+        <div class="chart-wrap tall"><canvas id="chartJeans"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Top 6 subcategorías de jean (semestre)</h3>
+        <div class="note">Por estilo/silueta ("class")</div>
+        <div class="chart-wrap tall"><canvas id="chartJeansClass"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <div class="pill neutral">Mujer</div>
+        <p style="margin-top:12px; font-size:14.5px;"><b>"Fashion" es la subcategoría líder</b> con $133,1M en el semestre — casi el doble que el segundo lugar. High-rise Jegging y Stovepipe completan el top de siluetas femeninas.</p>
+      </div>
+      <div class="card">
+        <div class="pill neutral">Hombre</div>
+        <p style="margin-top:12px; font-size:14.5px;"><b>Mens Slim Denim domina la línea masculina</b> ($75,7M), casi el doble del segundo estilo (Mens Slim Straight, $37,2M). El surtido masculino está menos diversificado que el femenino.</p>
+      </div>
+      <div class="card">
+        <div class="pill warn">Riesgo</div>
+        <p style="margin-top:12px; font-size:14.5px;"><b>Un quiebre de inventario o retraso de reposición en jeans</b> golpea 7 de cada 10 pesos de venta potencial en los meses pico. La categoría necesita prioridad de abastecimiento sobre cualquier otra.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stitch"></div>
+
+<!-- ============ 06 ESTRATEGIAS ============ -->
+<section id="estrategias" class="section-alt">
+  <div class="wrap">
+    <div class="section-kicker">06 · Estrategias comerciales y descuentos</div>
+    <div class="section-head"><span class="rivet"></span><h2>El margen mejoró incluso cuando la ejecución cayó</h2></div>
+    <p class="lede">Contraintuitivamente, el margen bruto ponderado subió de 58,5% en enero a 67,2% en junio, mientras el descuento promedio ponderado bajó de 24,5% a 17,8%. La tienda vendió menos en junio, pero vendió con mejor rentabilidad relativa.</p>
+
+    <div class="grid-2" style="margin-bottom:28px;">
+      <div class="chart-box">
+        <h3>Margen bruto vs. descuento promedio ponderado</h3>
+        <div class="note">% GM ponderado por venta · % descuento ponderado por venta</div>
+        <div class="chart-wrap"><canvas id="chartMargenDcto"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h3>Venta por grupo de estrategia comercial</h3>
+        <div class="note">Acumulado del semestre · color = margen bruto del grupo</div>
+        <div class="chart-wrap"><canvas id="chartEstrategias"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-box" style="margin-bottom:24px;">
+      <h3>Tabla: rentabilidad por tipo de estrategia</h3>
+      <div class="note">Ordenado por venta generada en el semestre</div>
+      <table id="tablaEstrategias">
+        <thead><tr><th>Estrategia</th><th class="num">Venta</th><th class="num">% del total</th><th class="num">Margen bruto</th><th class="num">Descuento prom.</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="border-left-color:var(--warn); background:linear-gradient(90deg, rgba(179,69,44,.08), transparent);">
+      <b style="color:var(--warn)">Correlación descuento–margen: −0,39.</b> A mayor profundidad de descuento, menor margen bruto (esperado), pero la relación es moderada, no fuerte — lo que indica que algunas estrategias de descuento agresivo (Empleados 40%, Online, Whatsapp) están erosionando margen (50–53% GM) sin un volumen de venta que lo compense: juntas representan solo 5,2% de la venta total.
+    </div>
+  </div>
+</section>
+
+<div class="stitch"></div>
+
+<!-- ============ 07 PRONOSTICO + RECOMENDACIONES ============ -->
+<section id="recomendaciones">
+  <div class="wrap">
+    <div class="section-kicker">07 · Proyección y recomendaciones</div>
+    <div class="section-head"><span class="rivet"></span><h2>Julio, y las cinco decisiones que más impacto tendrán</h2></div>
+
+    <div class="grid-2" style="margin-bottom:36px;">
+      <div class="chart-box">
+        <h3>Tendencia y proyección de venta — Julio 2026</h3>
+        <div class="note">Regresión lineal simple sobre 6 meses (pendiente: +$3,05M/mes)</div>
+        <div class="chart-wrap"><canvas id="chartForecast"></canvas></div>
+      </div>
+      <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="lbl mono" style="font-size:12px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em;">Proyección julio 2026</div>
+        <div style="font-family:'Fraunces',serif; font-size:40px; font-weight:600; color:var(--denim-900); margin:10px 0;">$177,7 MM</div>
+        <p style="font-size:14px; color:var(--ink-soft);">Basado en la tendencia lineal del semestre. Si el presupuesto de julio se fija por encima de este valor sin cambios operativos (tráfico, conversión o surtido de jeans), es previsible repetir el patrón de sub-ejecución de mayo–junio.</p>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-bottom:8px;"><span class="rivet"></span><h2 style="font-size:26px;">Recomendaciones priorizadas</h2></div>
+    <div class="card" style="padding:8px 26px;">
+      <div class="reco">
+        <div class="badge-num">1</div>
+        <div><h4>Fijar el presupuesto sobre la tendencia real, no sobre el pico de mayo</h4><p>El presupuesto de mayo (+34% vs. abril) fue la principal causa de la caída de ejecución en el segundo trimestre. Anclar metas futuras a la pendiente de +$3,05M/mes evita fijar objetivos que la operación actual no puede sostener.</p></div>
+      </div>
+      <div class="reco">
+        <div class="badge-num">2</div>
+        <div><h4>Proteger el inventario de jeans como prioridad #1 de abastecimiento</h4><p>Con 52% de la venta categorizada y hasta 77% de participación en meses pico, cualquier quiebre de stock en Womens/Mens Jeans tiene el mayor efecto multiplicador negativo sobre la venta total.</p></div>
+      </div>
+      <div class="reco">
+        <div class="badge-num">3</div>
+        <div><h4>Replicar las condiciones de conversión de abril (14,0%)</h4><p>Investigar qué cambió en el piso de venta ese mes (turnos, exhibición, staffing) y estandarizarlo. Llevar el promedio de 11,55% a 14% en un mes de tráfico alto como mayo habría representado cerca de $50M adicionales.</p></div>
+      </div>
+      <div class="reco">
+        <div class="badge-num">4</div>
+        <div><h4>Revisar o eliminar las estrategias de descuento de bajo rendimiento</h4><p>Empleados 40%, Online y Whatsapp combinan el margen más bajo (50–53% GM) con la menor participación de venta (5,2% conjunto). Evaluar si su objetivo (fidelización, canal digital) justifica el costo de margen.</p></div>
+      </div>
+      <div class="reco">
+        <div class="badge-num">5</div>
+        <div><h4>Depurar el 50% de referencias de menor rotación</h4><p>La mitad de las 917 referencias vendidas aporta menos de 9% de la venta. Un análisis de liquidación / devolución a proveedor libera capital de trabajo y espacio en piso para las categorías de alta rotación (jeans, tees, pantalones).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div><b>Informe de desempeño comercial</b> · AEO2212 San Nicolás Rionegro</div>
+      <div style="margin-top:6px;">Elaborado a partir de 24 reportes fuente (ventas, categorías, jeans y estrategias comerciales, enero–junio 2026).</div>
+    </div>
+    <div style="text-align:right;">
+      <div>Metodología: agregación y consolidación de datos, análisis de correlación de Pearson, regresión lineal y multivariable, análisis Pareto (ABC), descomposición de venta.</div>
+      <div style="margin-top:6px;">Generado con análisis de datos asistido — Julio 2026.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"meses": ["enero", "febrero", "marzo", "abril", "mayo", "junio"], "meses_cap": ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"], "venta": [180099137.0, 126212708.0, 157488333.0, 182553193.0, 208778126.0, 146926042.0], "ppto": [154000000, 94000000, 178000000, 180000000, 244000000, 203000000], "ejecucion": [116.9, 134.3, 88.5, 101.4, 85.6, 72.4], "footfall": [5971, 4268, 4477, 4457, 5746, 4075], "tc": [11.0, 10.1, 10.54, 14.0, 12.08, 11.58], "upt": [2.0, 2.46, 2.58, 2.13, 2.34, 2.39], "facturas": [815, 486, 518, 686, 775, 546], "ticket_promedio": [220981.0, 259697.0, 304032.0, 266113.0, 269391.0, 269095.0], "indice_estacional": [1.078, 0.756, 0.943, 1.093, 1.25, 0.88], "aur_implicito": [110574.0, 105395.0, 117625.0, 125135.0, 115335.0, 112600.0], "gm_ponderado": [58.5, 63.3, 64.6, 65.0, 62.8, 67.2], "dcto_ponderado": [24.5, 20.0, 19.8, 19.7, 24.1, 17.8], "total_venta": 1002057539.17, "total_ppto": 1053000000.0, "total_footfall": 28994, "total_facturas": 3826, "ejecucion_total": 95.16215946533713, "ticket_prom_general": 261907.35472294825, "cat_labels": ["043-Womens Jeans", "011-Mens Jeans", "017-Mens Knit Tees", "032-Womens Pants", "012-Mens Pants", "015-Mens Shirts", "077-Aerie Flirtie Undies", "034-Womens Sweaters", "Otras categorías (29)"], "cat_venta": [245667551.0, 165256555.0, 45289945.0, 44201232.0, 30875984.0, 30532321.0, 23997297.0, 20853942.0, 180243708.0], "cat_margen": [61.3, 63.2, 69.6, 61.3, 64.3, 71.5, 69.4, 66.4, 64.1], "jeans_mens": [38905075.0, 21373191.0, 25505608.0, 33641113.0, 33468059.0, 28076174.0], "jeans_womens": [62822210.0, 30238434.0, 51116421.0, 73207543.0, 73165375.0, 36598326.0], "jeans_share_categoria": [57.3, 50.1, 63.3, 77.3, 70.4, 67.8], "jeans_class_labels": ["Fashion", "Mens Slim Denim", "High-rise Jegging", "Mens Slim Straig", "Stovepipe", "Mens Original St"], "jeans_class_venta": [133075353.0, 75672610.0, 45936556.0, 37203355.0, 37104641.0, 24122066.0], "est_grupo_labels": ["Campañas y combos especiales", "Sin descuento / Precio lleno", "SALE (Rebajas)", "Adquisición crédito/1a compra", "Nueva colección (10%)", "Cumpleaños", "Empleados", "Online", "Whatsapp"], "est_grupo_venta": [401359925.0, 254758352.0, 143801040.0, 80218033.0, 76152227.0, 73439388.0, 34131813.0, 15516729.0, 2088246.0], "est_grupo_gm": [60.1, 74.8, 56.4, 61.2, 66.2, 61.0, 52.3, 50.3, 53.0], "est_grupo_dcto": [30.6, 0.3, 32.7, 10.0, 11.6, 30.2, 41.3, 41.3, 34.0], "pareto_x": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "pareto_y": [54.3, 70.5, 80.2, 86.8, 91.5, 95.1, 97.6, 99.5, 100.0, 100.0], "n_skus": 917, "top20_pct_venta": 70.5, "pred_julio": 177699153.74266663, "pendiente_mensual": 3054161.1088571446, "corr_matrix": [[1.0, 0.746, 0.592, -0.512], [0.746, 1.0, 0.016, -0.575], [0.592, 0.016, 1.0, -0.504], [-0.512, -0.575, -0.504, 1.0]], "corr_labels": ["Venta", "Tráfico", "Conversión", "UPT"], "r2_multiregresion": 98.9};
+
+const fmtCOP = n => '$' + Math.round(n).toLocaleString('es-CO');
+const fmtCOPmm = n => '$' + (n/1e6).toLocaleString('es-CO',{maximumFractionDigits:1}) + 'M';
+
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = '#5a5f6b';
+Chart.defaults.font.size = 12;
+
+const denim900 = '#1c2b45', denim700='#324b76', copper='#c1743f', copperDark='#a35f31', ok='#4c7a5c', warn='#b3452c', denim400='#7690b8';
+
+// 1. Venta vs Presupuesto
+new Chart(document.getElementById('chartVentaPpto'), {
+  data: {
+    labels: D.meses_cap,
+    datasets: [
+      {type:'bar', label:'Venta real', data: D.venta, backgroundColor: D.ejecucion.map(e=> e>=100? 'rgba(76,122,92,.75)':'rgba(179,69,44,.7)'), borderRadius:3, order:2},
+      {type:'line', label:'Presupuesto (PPTO)', data: D.ppto, borderColor: denim900, backgroundColor:'transparent', borderWidth:2, borderDash:[6,4], pointRadius:4, pointBackgroundColor:denim900, tension:.2, order:1}
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{position:'top', align:'end', labels:{boxWidth:12, usePointStyle:true}},
+      tooltip:{callbacks:{label: ctx => ctx.dataset.label+': '+fmtCOP(ctx.raw)}}},
+    scales:{ y:{ ticks:{ callback:v=>fmtCOPmm(v)}, grid:{color:'#eee4d3'}}, x:{grid:{display:false}} }
+  }
+});
+
+// 2. Trafico vs conversion
+new Chart(document.getElementById('chartTraficoConv'), {
+  data:{
+    labels:D.meses_cap,
+    datasets:[
+      {type:'bar', label:'Tráfico (visitantes)', data:D.footfall, backgroundColor:'rgba(50,75,118,.55)', borderRadius:3, yAxisID:'y'},
+      {type:'line', label:'Conversión (%)', data:D.tc, borderColor:copper, backgroundColor:copper, borderWidth:2.5, pointRadius:4, tension:.3, yAxisID:'y1'}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'top', align:'end', labels:{boxWidth:12,usePointStyle:true}}},
+    scales:{
+      y:{position:'left', grid:{color:'#f0f0f0'}, title:{display:true,text:'Visitantes'}},
+      y1:{position:'right', grid:{display:false}, title:{display:true,text:'% Conversión'}, ticks:{callback:v=>v+'%'}}
+    }
+  }
+});
+
+// 3. Estacionalidad
+new Chart(document.getElementById('chartEstacional'), {
+  type:'bar',
+  data:{labels:D.meses_cap, datasets:[{label:'Índice estacional', data:D.indice_estacional, backgroundColor: D.indice_estacional.map(v=>v>=1?'rgba(76,122,92,.75)':'rgba(193,116,63,.65)'), borderRadius:3}]},
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>'Índice: '+ctx.raw.toFixed(2)}}},
+    scales:{y:{ grid:{color:'#eee4d3'}, title:{display:true,text:'Índice (1,0 = promedio)'}}, x:{grid:{display:false}}}
+  }
+});
+
+// Correlation "heatmap" as table
+(function(){
+  const el = document.getElementById('corrTable');
+  let html = '<table><thead><tr><th></th>' + D.corr_labels.map(l=>`<th class="num">${l}</th>`).join('') + '</tr></thead><tbody>';
+  D.corr_labels.forEach((row,i)=>{
+    html += `<tr><th>${row}</th>`;
+    D.corr_matrix[i].forEach(v=>{
+      const abs = Math.abs(v);
+      const bg = v===1 ? '#1c2b45' : (v>0 ? `rgba(76,122,92,${abs*0.85})` : `rgba(179,69,44,${abs*0.85})`);
+      const color = (v===1 || abs>0.45) ? '#fff' : '#20242c';
+      html += `<td class="num" style="background:${bg}; color:${color}; font-weight:600;">${v.toFixed(2)}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+})();
+
+// AUR implicito
+new Chart(document.getElementById('chartAUR'), {
+  type:'line',
+  data:{labels:D.meses_cap, datasets:[{label:'AUR implícito', data:D.aur_implicito, borderColor:denim700, backgroundColor:'rgba(50,75,118,.12)', fill:true, tension:.35, pointRadius:4, pointBackgroundColor:denim700, borderWidth:2.5}]},
+  options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>fmtCOP(ctx.raw)}}}, scales:{y:{ticks:{callback:v=>fmtCOP(v)}, grid:{color:'#f0f0f0'}}, x:{grid:{display:false}}}}
+});
+
+// Categorias
+new Chart(document.getElementById('chartCategorias'), {
+  type:'bar',
+  data:{
+    labels:D.cat_labels,
+    datasets:[{label:'Venta neta', data:D.cat_venta, backgroundColor: D.cat_labels.map((l,i)=> i<2? copper: 'rgba(50,75,118,.55)'), borderRadius:3}]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{
+      label: ctx => fmtCOP(ctx.raw)+'  ·  margen '+D.cat_margen[ctx.dataIndex]+'%'
+    }}},
+    scales:{x:{ticks:{callback:v=>fmtCOPmm(v)}, grid:{color:'#f0f0f0'}}, y:{grid:{display:false}}}
+  }
+});
+
+// Pareto
+new Chart(document.getElementById('chartPareto'), {
+  type:'line',
+  data:{
+    labels:D.pareto_x.map(x=>x+'%'),
+    datasets:[
+      {label:'% acumulado de venta', data:D.pareto_y, borderColor:copper, backgroundColor:'rgba(193,116,63,.15)', fill:true, tension:.25, pointRadius:3, borderWidth:2.5},
+      {label:'Línea de equidistribución', data:D.pareto_x, borderColor:'#bbb', borderDash:[4,4], pointRadius:0, borderWidth:1.5}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'top', align:'end', labels:{boxWidth:12,usePointStyle:true}}},
+    scales:{y:{title:{display:true,text:'% acumulado de venta'}, ticks:{callback:v=>v+'%'}, grid:{color:'#f0f0f0'}}, x:{title:{display:true,text:'% de referencias (SKU)'}, grid:{display:false}}}
+  }
+});
+
+// Jeans
+new Chart(document.getElementById('chartJeans'), {
+  data:{
+    labels:D.meses_cap,
+    datasets:[
+      {type:'bar', label:'Womens Jeans', data:D.jeans_womens, backgroundColor:'rgba(193,116,63,.75)', stack:'a', borderRadius:3},
+      {type:'bar', label:'Mens Jeans', data:D.jeans_mens, backgroundColor:'rgba(50,75,118,.65)', stack:'a', borderRadius:3},
+      {type:'line', label:'% participación en categorías', data:D.jeans_share_categoria, borderColor:denim900, borderDash:[5,3], pointRadius:4, pointBackgroundColor:denim900, borderWidth:2, yAxisID:'y1', tension:.3}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'top', align:'end', labels:{boxWidth:12,usePointStyle:true}}},
+    scales:{
+      y:{stacked:true, ticks:{callback:v=>fmtCOPmm(v)}, grid:{color:'#f0f0f0'}},
+      y1:{position:'right', min:0, max:100, grid:{display:false}, ticks:{callback:v=>v+'%'}}
+    }
+  }
+});
+
+// Jeans class
+new Chart(document.getElementById('chartJeansClass'), {
+  type:'bar',
+  data:{labels:D.jeans_class_labels, datasets:[{label:'Venta', data:D.jeans_class_venta, backgroundColor:'rgba(193,116,63,.7)', borderRadius:3}]},
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>fmtCOP(ctx.raw)}}},
+    scales:{x:{ticks:{callback:v=>fmtCOPmm(v)}, grid:{color:'#f0f0f0'}}, y:{grid:{display:false}}}
+  }
+});
+
+// Margen vs descuento
+new Chart(document.getElementById('chartMargenDcto'), {
+  data:{
+    labels:D.meses_cap,
+    datasets:[
+      {type:'line', label:'Margen bruto (%GM)', data:D.gm_ponderado, borderColor:ok, backgroundColor:ok, borderWidth:2.5, pointRadius:4, tension:.3},
+      {type:'line', label:'Descuento promedio (%)', data:D.dcto_ponderado, borderColor:warn, backgroundColor:warn, borderWidth:2.5, pointRadius:4, tension:.3, borderDash:[5,3]}
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{position:'top', align:'end', labels:{boxWidth:12,usePointStyle:true}}},
+    scales:{y:{ticks:{callback:v=>v+'%'}, grid:{color:'#f0f0f0'}}, x:{grid:{display:false}}}
+  }
+});
+
+// Estrategias
+new Chart(document.getElementById('chartEstrategias'), {
+  type:'bar',
+  data:{
+    labels:D.est_grupo_labels,
+    datasets:[{label:'Venta', data:D.est_grupo_venta, backgroundColor: D.est_grupo_gm.map(g=> g>=65? 'rgba(76,122,92,.75)' : g>=55 ? 'rgba(193,116,63,.7)' : 'rgba(179,69,44,.65)'), borderRadius:3}]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>fmtCOP(ctx.raw)+'  ·  GM '+D.est_grupo_gm[ctx.dataIndex]+'%  ·  Dcto '+D.est_grupo_dcto[ctx.dataIndex]+'%'}}},
+    scales:{x:{ticks:{callback:v=>fmtCOPmm(v)}, grid:{color:'#f0f0f0'}}, y:{grid:{display:false}, ticks:{font:{size:11}}}}
+  }
+});
+
+// Tabla estrategias
+(function(){
+  const tbody = document.querySelector('#tablaEstrategias tbody');
+  const total = D.est_grupo_venta.reduce((a,b)=>a+b,0);
+  const idx = D.est_grupo_venta.map((v,i)=>i).sort((a,b)=>D.est_grupo_venta[b]-D.est_grupo_venta[a]);
+  idx.forEach(i=>{
+    const pct = (D.est_grupo_venta[i]/total*100).toFixed(1);
+    const gmClass = D.est_grupo_gm[i] >= 65 ? 'ok' : D.est_grupo_gm[i] >= 55 ? 'neutral' : 'warn';
+    tbody.innerHTML += `<tr>
+      <td>${D.est_grupo_labels[i]}</td>
+      <td class="num">${fmtCOP(D.est_grupo_venta[i])}</td>
+      <td class="num">${pct}%</td>
+      <td class="num"><span class="pill ${gmClass}">${D.est_grupo_gm[i]}%</span></td>
+      <td class="num">${D.est_grupo_dcto[i]}%</td>
+    </tr>`;
+  });
+})();
+
+// Forecast
+(function(){
+  const labels = [...D.meses_cap, 'Julio*'];
+  const ventaExt = [...D.venta, null];
+  const trendLine = D.meses_cap.map((_,i)=> D.pendiente_mensual*(i+1) + (D.venta[0]-D.pendiente_mensual));
+  // recompute intercept properly using simple linear regression already done server side; approximate via first+slope
+  const intercept = D.pred_julio - D.pendiente_mensual*7;
+  const trend = [1,2,3,4,5,6,7].map(x=> intercept + D.pendiente_mensual*x);
+  new Chart(document.getElementById('chartForecast'), {
+    data:{
+      labels: labels,
+      datasets:[
+        {type:'bar', label:'Venta real', data: ventaExt, backgroundColor:'rgba(50,75,118,.55)', borderRadius:3},
+        {type:'bar', label:'Proyección julio', data:[null,null,null,null,null,null, D.pred_julio], backgroundColor:'rgba(193,116,63,.7)', borderRadius:3},
+        {type:'line', label:'Tendencia lineal', data: trend, borderColor:denim900, borderDash:[6,4], pointRadius:0, borderWidth:2, tension:0}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'top', align:'end', labels:{boxWidth:12,usePointStyle:true}}, tooltip:{callbacks:{label:ctx=> ctx.raw ? (ctx.dataset.label+': '+fmtCOP(ctx.raw)) : ''}}},
+      scales:{y:{ticks:{callback:v=>fmtCOPmm(v)}, grid:{color:'#f0f0f0'}}, x:{grid:{display:false}}}
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
